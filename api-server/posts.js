@@ -6,10 +6,10 @@ const defaultData = {
   "8xf0y6ziyjabvozdd253nd": {
     id: '8xf0y6ziyjabvozdd253nd',
     timestamp: 1467166872634,
-    title: 'Udacity is the best place to learn React',
-    body: 'Everyone says so after all.',
-    author: 'thingtwo',
-    category: 'react',
+    title: "How to Select a Puppy That's Right for You",
+    body: "Though all puppies are incredibly cute, not all are a good fit for your lifestyle. With the proper research and preparation, you can find a dog who will be a great addition to the family. The decision to adopt is far too important to be based on puppy-love-at-first-sight. The incredible range of breeds, exercise needs and temperaments makes it imperative that you do your homework. All puppies eventually grow to be adults, so choosing a dog who fits your lifestyle is the best way to ensure that your decision won’t end in regret. After taking the time to research and compare dog breeds, you’ll have a better sense about which puppies are likely to grow up to be couch potatoes and which might make good jogging partners.",
+    author: 'Alohaha',
+    category: 'dogs',
     voteScore: 6,
     deleted: false,
     commentCount: 2
@@ -17,11 +17,22 @@ const defaultData = {
   "6ni6ok3ym7mf1p33lnez": {
     id: '6ni6ok3ym7mf1p33lnez',
     timestamp: 1468479767190,
-    title: 'Learn Redux in 10 minutes!',
-    body: 'Just kidding. It takes more than 10 minutes to learn technology.',
-    author: 'thingone',
-    category: 'redux',
+    title: 'Why Do Cats Purr?',
+    body: "Purring is the most common sound cats make. Yet we know less about it than meowing, chirping, chattering, hissing, and growling. Yes, cats purr when they're content. When yours is curled up in the sun, you may hear a gentle rumble as he breathes in and out. Touch him, and you feel a little quiver. It's almost as if he's sending out waves of calm. But you shouldn't assume that sound means your cat is in a good mood. Or that it's the only time you'll hear it. Cats purr to communicate other emotions and needs, too. What if you pick your cat up and hold him? Does he purr because he likes it -- or because he's nervous? Although you'll never know exactly what yours is saying when he purrs, research from animal experts, along with considering the situation, lets you make an informed guess.",
+    author: 'Alohaha',
+    category: 'cats',
     voteScore: -5,
+    deleted: false,
+    commentCount: 0
+  },
+  "7li5oo4yu7m11p83piay": {
+    id: '7li5oo4yu7m11p83piay',
+    timestamp: 1468479867960,
+    title: "Reading your parrot's body language",
+    body: "Learning to recognize your parrot’s healthy body language will help you know when he is feeling fine or when he’s ill, as well as when he wants attention or food. It will also help you avoid receiving a nasty bite. Most parrots are an open book in terms of body language. Once you know the signs, it’s not difficult to tell when your bird is happy, sleepy, terrified, or simply excited just by noticing his stance.",
+    author: 'Alohaha',
+    category: 'birds',
+    voteScore: 45,
     deleted: false,
     commentCount: 0
   }
