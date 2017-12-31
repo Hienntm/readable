@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component } from 'react';
 import { connect }from 'react-redux';
 import { Link }from 'react-router-dom';
@@ -26,7 +25,9 @@ class PostsList extends Component {
 	}
 
 	onDeleteClick(id) {
-		this.props.deletePost(id);
+		this.props.deletePost(id,() => {
+		  this.props.history.push('/');
+		});
 	}
 
 	onVoteClick(id, option) {
@@ -34,12 +35,13 @@ class PostsList extends Component {
 	}
 
 	renderPosts() {
-		const sortedPosts = _.orderBy(this.props.posts, [this.state.order], ['desc'])
-		return _.map(sortedPosts, post => {
-			if ((!post) || (post === undefined)) {
-				return <div > Loading... < /div>;
-			}
-			return ( 
+		const { posts } = this.props
+		const { order } = this.state
+		const sortedPosts = Object.values(posts).sort((a,b) => {
+			return b[order] - a[order]
+		})
+		console.log(posts)
+		return sortedPosts.map(post => ( 
 			<li className = "row list-group-item" key = { post.id }> 
 				<div className = "col-md-8" > 
 					<Link to = {`/${post.category}/${post.id}`} > 
@@ -56,25 +58,27 @@ class PostsList extends Component {
 					&nbsp;
 					<span className="glyphicon glyphicon-comment"></span>
 				</div>
-				<div className = "col-md-6" >
+				<div className = "col-md-12" >
 					<Link to={ `/posts/${post.id}/edit` } className="btn btn-link btn-xs">
 						<span className="glyphicon glyphicon-pencil"></span>
 					</Link>
 					<button type="button" className="post-delete btn btn-link btn-xs" onClick = {() => this.onDeleteClick(post.id) }>
 						<span className="glyphicon glyphicon-trash"></span>
 					</button>		
+				
+					<div className = "pull-right" > 
+						<span> { post.voteScore } </span> 
+						<button type="button" className="post-vote-up btn btn-link btn-xs" onClick={() => this.onVoteClick(post.id, 'upVote')}>
+							<span className="glyphicon glyphicon-arrow-up"></span>
+						</button>
+						<button type="button" className="post-vote-down btn btn-link btn-xs" onClick={() => this.onVoteClick(post.id, 'downVote')}>
+							<span className="glyphicon glyphicon-arrow-down"></span>
+						</button>
+					</div> 
 				</div> 
-				<div className = "col-sm-6 post-vote" > 
-					<span> { post.voteScore } </span> 
-					<button type="button" className="post-vote-up btn btn-link btn-xs" onClick={() => this.onVoteClick(post.id, 'upVote')}>
-						<span className="glyphicon glyphicon-arrow-up"></span>
-					</button>
-					<button type="button" className="post-vote-down btn btn-link btn-xs" onClick={() => this.onVoteClick(post.id, 'downVote')}>
-						<span className="glyphicon glyphicon-arrow-down"></span>
-					</button>
-				</div> 
-			< /li>)
-		})
+			< /li>
+			)
+		)
 	}
 	render() {
 		return ( 
@@ -108,6 +112,4 @@ function mapStateToProps({ posts }) {
 	}
 }
 
-export default connect(mapStateToProps, {
-	votePost, getPosts, getPostsByCategory, deletePost, getCategories
-})(PostsList);
+export default connect(mapStateToProps, { votePost, getPosts, getPostsByCategory, deletePost, getCategories })(PostsList);

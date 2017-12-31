@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { getPost, deletePost, votePost, getComments } from '../actions';
-import Comment from './Comment';
-import CommentForm from './CommentForm';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { getPost, deletePost, votePost, getComments } from '../actions'
+import Comment from './Comment'
+import CommentCreateEdit from './CommentCreateEdit'
+import NoMatch from './NoMatch'
 
 class DetailedPost extends Component {
   componentDidMount() {
@@ -13,18 +13,20 @@ class DetailedPost extends Component {
     this.props.getPost(id);
   }
 
-  onDeleteClick = () => {
-    const { id } = this.props.match.params;
+  onDeleteClick(id) {
     this.props.deletePost(id, () => {
       this.props.history.push('/');
     });
   }
   
+  onVoteClick(id, option) {
+	this.props.votePost(id,option);
+  }  
+
   renderComments = () => {
 	const { comments } = this.props
-    return _.map(comments, comment => {
+    return Object.values(comments).map(comment => {
       const { id, body, author, voteScore} = comment;
-		console.log(body)
       return (
         <li className="list-group-item" key={id}>
           <Comment
@@ -32,7 +34,7 @@ class DetailedPost extends Component {
             content={body}
             author={author}
             voteScore={voteScore}
-            parentId={this.props.posts.id}
+            parentId={this.props.post.id}
           />
         </li>
       );
@@ -41,56 +43,56 @@ class DetailedPost extends Component {
 
   render() {
 	
-    function getDateTimeFromTimestamp(unixTimeStamp) {
-       var date = new Date(unixTimeStamp);
-       return ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2) + '/' + date.getFullYear() + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
+    function turnTimestampToDate(timeStamp) {
+       var date = new Date(timeStamp)
+       return date.toString().slice(4,15)
      }
 
-    const { posts } = this.props;
-    if(!posts) {
-      return <div>This post is not available.</div>;
+    const { post } = this.props;
+	  
+    if(!post) {
+      return <NoMatch />;
     }
-	console.log(posts)
-    // const formattedTime = convertTime(post.timestamp);
-    const formattedTime = getDateTimeFromTimestamp(posts.timestamp)
+	  
+    const postDate = turnTimestampToDate(post.timestamp)
     return (
 	<div className="container">
 		<div className="row">
 			<div className="post-container">
-				<h2 className="post-title">				{posts.title}
-				</h2>
+				<h1 className="post-title">				{post.title}
+				</h1>
 				<div className="post-date">
-					Posted at { formattedTime }
+					Published on { postDate }
 				</div>
 				<div className="post-author">
 					<span className="glyphicon glyphicon-user"></span>
 					&nbsp;
-					{ posts.author }
+					{ post.author }
 					&nbsp;
 					&nbsp;
-					{ posts.commentCount }
+					{ post.commentCount }
 					&nbsp;
 					<span className="glyphicon glyphicon-comment"></span>
 				</div>
-				<p>{posts.body}</p>
+				<p>{post.body}</p>
 			</div>
 		</div>
 				
 		<div className="row">
 			<div className="col-sm-6 post-edit" >
-				<Link to={`/posts/${posts.id}/edit`} className="btn btn-link btn-xs">
+				<Link to={`/posts/${post.id}/edit`} className="btn btn-link btn-xs">
 				    <span className="glyphicon glyphicon-pencil"></span>
 				</Link>
-				<button type="button" className="post-delete btn btn-link btn-xs" onClick={this.onDeleteClick.bind(this)}>
+				<button type="button" className="post-delete btn btn-link btn-xs" onClick={() => this.onDeleteClick(post.id)}>
 					<span className="glyphicon glyphicon-trash"></span>
 				</button>
 			</div>
 			<div className="col-sm-6 post-vote">	
-				<span> { posts.voteScore } </span> 
-				<button type="button" className="post-vote-up btn btn-link btn-xs"  onClick={() => votePost('upVote')}>
+				<span> { post.voteScore } </span> 
+				<button type="button" className="post-vote-up btn btn-link btn-xs"  onClick={() => this.onVoteClick(post.id, 'upVote')}>
 					<span className="glyphicon glyphicon-arrow-up"></span>
 				</button>
-				<button type="button" className="post-vote-down btn btn-link btn-xs" onClick={() => votePost('downVote')}>
+				<button type="button" className="post-vote-down btn btn-link btn-xs" onClick={() => this.onVoteClick(post.id, 'downVote')}>
 					<span className="glyphicon glyphicon-arrow-down"></span>
 				</button>
 			</div>
@@ -98,14 +100,13 @@ class DetailedPost extends Component {
 		</div>
 		
 
-		<div className="comment-container">
+		<div className="row">
 			<hr />
-			<h5>{ posts.commentCount } comments</h5>
+			<h3>{ post.commentCount } comments</h3>
 			<ul className="list-group">
-			{ this.renderComments() }
-			<CommentForm parentId={posts.id}/>
+				{ this.renderComments() }
 			</ul>
-
+			<CommentCreateEdit />
 		</div>
 
   	</div>
@@ -113,9 +114,9 @@ class DetailedPost extends Component {
   }
 }
 
-function mapStateToProps({ posts, comments }) {
+function mapStateToProps({ posts, comments }, ownProps) {
   return {
-    posts: posts,
+    post: posts[ownProps.match.params.id],
     comments
   }
 }
