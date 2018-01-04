@@ -11,6 +11,7 @@ class PostCreateEdit extends Component {
     	this.props.getPost(this.props.match.params.id);
 	}
   }
+
 	
   renderFieldInput(field) {
     return (
@@ -24,14 +25,15 @@ class PostCreateEdit extends Component {
   }
 
   renderFieldSelect(field) {
+	  console.log(field)
     return (
       <div className="form-group row">
         <label className="col-sm-2 col-form-label">{field.label}</label>
         <div className="col-sm-10">
 			<select className="form-control" {...field.input}>
-				<option>dogs</option>
-				<option>cats</option>
-				<option>birds</option> 		
+			{Object.values(field.categories).map(category => (
+				<option key={category.path} value={category.path}>{category.path}</option>
+			))}
 			</select>
      	</div>
       </div>
@@ -39,6 +41,7 @@ class PostCreateEdit extends Component {
   }	
 	
   renderFieldTextArea(field) {
+	  
     return (
       <div className="form-group row">
         <label className="col-sm-2 col-form-label">{field.label}</label>
@@ -60,6 +63,7 @@ class PostCreateEdit extends Component {
 
   render() {
     const { handleSubmit } = this.props
+	const { categories } = this.props
     return (
       <div className="container">
 		  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
@@ -77,6 +81,7 @@ class PostCreateEdit extends Component {
 			<Field
 			  label="Category"
 			  name="category"
+			  categories = {categories}
 			  component={this.renderFieldSelect}
 			/>              
 			<Field
@@ -96,8 +101,9 @@ class PostCreateEdit extends Component {
   }
 }
 
-function mapStateToProps({ posts }, ownProps) {
+function mapStateToProps({ categories, posts }, ownProps) {
   return {
+	  categories,
 	  initialValues: posts[ownProps.match.params.id],
   }
 }

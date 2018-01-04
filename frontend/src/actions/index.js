@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import uuid from 'uuid'
 
 const ROOT_URL = "http://localhost:3001"
 
@@ -192,20 +192,22 @@ export const getComment = id => dispatch => {
 }
 
 function addCommentActionCreator(data) {
+	console.log(data)
 	return {
 		type: ADD_COMMENT,
 		comment: data
 	}
 }
 
-export const addComment = comment => dispatch => {
+export const addComment = (comment, parentId) => dispatch => {
     const { body, author} = comment;
-
+console.log(parentId)
     const data = {
         id: uuid(),
         timestamp: Date.now(),
         body,
-        author
+        author,
+		parentId,
     }
 	fetch(`${ROOT_URL}/comments/`, {...headers, method: 'POST', body: JSON.stringify(data)})
 	.then(res => res.json())
@@ -222,13 +224,14 @@ function updateCommentActionCreator(data) {
 }
 
 export const updateComment = (id, comment) => dispatch => {
-    const { body, author, id } = comment;
+    const { body, author, id, parentId } = comment;
 
     const data = {
         id,
         timestamp: Date.now(),
         body,
-        author
+        author,
+		parentId
     }
 	fetch(`${ROOT_URL}/comments/${id}`, {...headers, method: 'PUT', body: JSON.stringify(data)})
 	.then(res => res.json())

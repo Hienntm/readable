@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import { addComment, updateComment } from '../actions';
-import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import React, { Component } from 'react'
+import { addComment } from '../actions'
+import { connect } from 'react-redux'
+import { Field, reduxForm } from 'redux-form'
 
 
 class CommentCreateEdit extends Component {
-
   renderInput(field) {
     return (
       <div className="form-group">
@@ -17,38 +16,44 @@ class CommentCreateEdit extends Component {
       </div>
     );
   }
-	
-  onSubmit(values) {
+  
+  onSubmit = (values) => {
+	console.log(values)
 	if (!this.props.id) {
-    	this.props.addComment(values);
+    	this.props.addComment(values, this.props.parentId)
+		this.props.reset()
 	} else {
-		this.props.updateComment(this.props.id, values);
+		this.props.updateComment(this.props.id, values, this.props.parentId)
+		
 	}
+  }
+  
+  onCancelClick = () => {
+	  this.props.reset()
   }
 	
   render() {
 	const { handleSubmit } = this.props
+	console.log(this.props)
     return (
-		<form className="col-sm-8" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-	  	  <h4>Share your thought</h4>
-		  <Field label="Author" name="author" component={this.renderInput} />
-		  <Field label="Comment" name="body" component={this.renderInput} />
-		  
-		  <button type="submit" className="btn btn-primary">Add Comment</button>
+		<form className="col-sm-8" onSubmit={handleSubmit(this.onSubmit)}>
+	  	  	<h4>Share your thought</h4>
+		    <Field label="Author" name="author" component={this.renderInput} />
+		    <Field label="Comment" name="body" component={this.renderInput} />
+  	  	  
+			<div>
+				<button type="submit" className="btn btn-primary">Post comment</button>
+				&nbsp;
+				&nbsp;		  	
+				<button type="button" className="btn btn-danger" onClick={this.onCancelClick}>Cancel</button>
+		  	</div>
 		</form>
     );
   }
 }
 
-function mapStateToProps({comments}) {
-	console.log(comments)
-	return {
-		initialValues: comments,
-	}
-}
-
 const InitializedFromStateForm = reduxForm({
-  form: 'CommentCreateEditForm'
+  form: 'CommentCreateForm'
 })(CommentCreateEdit);
 
-export default connect(mapStateToProps, { addComment, updateComment })(InitializedFromStateForm);
+export default connect(null, { addComment })(InitializedFromStateForm);

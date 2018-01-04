@@ -30,11 +30,7 @@ class DetailedPost extends Component {
       return (
         <li className="list-group-item" key={id}>
           <Comment
-            id={id}
-            content={body}
-            author={author}
-            voteScore={voteScore}
-            parentId={this.props.post.id}
+            comment={comment}
           />
         </li>
       );
@@ -48,7 +44,7 @@ class DetailedPost extends Component {
        return date.toString().slice(4,15)
      }
 
-    const { post } = this.props;
+    const { post, comments } = this.props;
 	  
     if(!post) {
       return <NoMatch />;
@@ -70,7 +66,7 @@ class DetailedPost extends Component {
 					{ post.author }
 					&nbsp;
 					&nbsp;
-					{ post.commentCount }
+					{ Object.values(comments).length }
 					&nbsp;
 					<span className="glyphicon glyphicon-comment"></span>
 				</div>
@@ -102,11 +98,13 @@ class DetailedPost extends Component {
 
 		<div className="row">
 			<hr />
-			<h3>{ post.commentCount } comments</h3>
+			<h3>{ Object.values(comments).length } comments</h3>
 			<ul className="list-group">
 				{ this.renderComments() }
 			</ul>
-			<CommentCreateEdit />
+			<CommentCreateEdit
+				parentId={this.props.post.id}
+			/>
 		</div>
 
   	</div>
