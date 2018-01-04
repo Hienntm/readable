@@ -40,7 +40,7 @@ class Comment extends Component {
 	
 	render() {
 		const { editForm } = this.state
-		const { id, author, body } = this.props.comment
+		const { id, author, body, voteScore } = this.props.comment
 		return (
 			<div>
 			{!editForm &&
@@ -61,7 +61,7 @@ class Comment extends Component {
 							</button>
 						</div>
 						<div className="col-md-6 comment-vote">	
-							<span className="vote-score">{this.props.voteScore}</span>
+							<span className="vote-score">{voteScore}</span>
 							<button type="button" className="comment-vote-up btn btn-link btn-xs" onClick={() => this.onVoteClick(id, 'upVote')}>	
 								<span className="glyphicon glyphicon-arrow-up"></span>
 							</button> 
@@ -71,9 +71,9 @@ class Comment extends Component {
 						</div>
 					</div>
 				</div>	
-				}
+			}
 				
-				{editForm && 
+			{editForm && 
 				<div className="row">
 					<form className="col-md-8">
 						<div className="form-group">
@@ -109,7 +109,7 @@ class Comment extends Component {
 						</div>
 					</form>
 				</div>
-				}
+			}
 			 </div>
 		)
 	}

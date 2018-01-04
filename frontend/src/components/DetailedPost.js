@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getPost, deletePost, votePost, getComments } from '../actions'
 import Comment from './Comment'
-import CommentCreateEdit from './CommentCreateEdit'
+import CommentForm from './CommentForm'
 import NoMatch from './NoMatch'
 
 class DetailedPost extends Component {
@@ -102,7 +102,7 @@ class DetailedPost extends Component {
 			<ul className="list-group">
 				{ this.renderComments() }
 			</ul>
-			<CommentCreateEdit
+			<CommentForm
 				parentId={this.props.post.id}
 			/>
 		</div>

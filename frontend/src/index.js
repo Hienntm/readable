@@ -13,7 +13,7 @@ import {Switch,Route} from 'react-router-dom'
 import Header from './components/Header'
 import PostsList from './components/PostsList'
 import DetailedPost from './components/DetailedPost'
-import PostCreateEdit from './components/PostCreateEdit'
+import PostForm from './components/PostForm'
 import './App.css'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -31,8 +31,8 @@ ReactDOM.render(
 		  <div className="App">
 			<Header />
 			<Switch>
-				<Route path="/posts/create-edit" component={PostCreateEdit}/>
-				<Route path="/posts/:id/edit" component={PostCreateEdit}/>
+				<Route path="/posts/create-edit" component={PostForm}/>
+				<Route path="/posts/:id/edit" component={PostForm}/>
 				<Route path="/:category/:id" component={DetailedPost}/>
 				<Route path="/:category" component={PostsList}/>				
 				<Route exact path="/" component={PostsList}/>
