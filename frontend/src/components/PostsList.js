@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect }from 'react-redux';
 import { Link }from 'react-router-dom';
 import { votePost, getPosts, getPostsByCategory, deletePost, getCategories } from '../actions';
+import { sortObjValues } from '../utils/helpers';
 
 class PostsList extends Component {
 	state = {
@@ -37,9 +38,7 @@ class PostsList extends Component {
 	renderPosts() {
 		const { posts } = this.props
 		const { order } = this.state
-		const sortedPosts = Object.values(posts).sort((a,b) => {
-			return b[order] - a[order]
-		})
+		const sortedPosts = sortObjValues(posts, order)
 		console.log(posts)
 		return sortedPosts.map(post => ( 
 			<li className = "row list-group-item" key = { post.id }> 
@@ -76,7 +75,7 @@ class PostsList extends Component {
 						</button>
 					</div> 
 				</div> 
-			< /li>
+			</li>
 			)
 		)
 	}

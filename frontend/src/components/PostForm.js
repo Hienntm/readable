@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { addPost, updatePost, getPost } from '../actions'
 
@@ -25,7 +24,6 @@ class PostCreateEdit extends Component {
   }
 
   renderFieldSelect(field) {
-	  console.log(field)
     return (
       <div className="form-group row">
         <label className="col-sm-2 col-form-label">{field.label}</label>
@@ -52,21 +50,26 @@ class PostCreateEdit extends Component {
     );
   }  
 
-  onSubmit(values) {
-	console.log(values)
-    if (!this.props.match.params.id) {
-      this.props.addPost(values, () => this.props.history.push('/'))
-    }else {
-      this.props.updatePost(this.props.initialValues.id, values, () => this.props.history.push('/'))
+  onSubmitClick = (values) => {
+		console.log(values)
+		if (!this.props.match.params.id) {
+			this.props.addPost(values, () => this.props.history.goBack())
+		}else {
+			this.props.updatePost(this.props.initialValues.id, values, () => this.props.history.goBack())
+		}
 	}
-  }
+	
+  onCancelClick = () => {
+		this.props.history.goBack()
+	}
 
   render() {
     const { handleSubmit } = this.props
-	const { categories } = this.props
+		const { categories } = this.props
+	  console.log(this)
     return (
       <div className="container">
-		  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+		  <form onSubmit={handleSubmit(this.onSubmitClick)}>
 			<br/>
 			<Field
 			  label="Username"
@@ -93,7 +96,7 @@ class PostCreateEdit extends Component {
 			<div className="pull-right">
 				<button type="submit" className="btn btn-primary">Submit</button>
 				&nbsp;&nbsp;
-				<Link to='/' className="btn btn-danger">Cancel</Link>
+				<button type="button" className="btn btn-danger" onClick={this.onCancelClick}>Cancel</button>
 			</div>
 		  </form>
       </div>

@@ -5,6 +5,7 @@ import { getPost, deletePost, votePost, getComments } from '../actions'
 import Comment from './Comment'
 import CommentForm from './CommentForm'
 import NoMatch from './NoMatch'
+import { turnTimestampToDate } from '../utils/helpers'
 
 class DetailedPost extends Component {
   componentDidMount() {
@@ -26,9 +27,8 @@ class DetailedPost extends Component {
   renderComments = () => {
 	const { comments } = this.props
     return Object.values(comments).map(comment => {
-      const { id, body, author, voteScore} = comment;
       return (
-        <li className="list-group-item" key={id}>
+        <li className="list-group-item" key={comment.id}>
           <Comment
             comment={comment}
           />
@@ -37,13 +37,7 @@ class DetailedPost extends Component {
     });
   }
 
-  render() {
-	
-    function turnTimestampToDate(timeStamp) {
-       var date = new Date(timeStamp)
-       return date.toString().slice(4,15)
-     }
-
+  render() {	
     const { post, comments } = this.props;
 	  
     if(!post) {

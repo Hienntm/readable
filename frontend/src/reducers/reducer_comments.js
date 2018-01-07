@@ -1,11 +1,5 @@
-import { GET_COMMENTS, GET_COMMENT, ADD_COMMENT, DELETE_COMMENT, UPDATE_COMMENT, VOTE_COMMENT } from '../actions';
-
-function turnArrayToObject(arr) {
-	return arr.reduce((obj,item) => {
-		obj[item.id]=item
-		return obj
-	},{})
-}
+import { GET_COMMENTS, GET_COMMENT, ADD_COMMENT, DELETE_COMMENT, UPDATE_COMMENT, VOTE_COMMENT } from '../actions/types';
+import { turnArrayToObject } from '../utils/helpers'
 
 export default function (state = {}, action) {
   switch (action.type) {

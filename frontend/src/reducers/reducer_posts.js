@@ -6,14 +6,8 @@ import {
 	UPDATE_POST, 
 	DELETE_POST, 
 	VOTE_POST
-} from '../actions'
-
-function turnArrayToObject(arr) {
-	return arr.reduce((obj,item) => {
-		obj[item.id]=item
-		return obj
-	},{})
-}
+} from '../actions/types'
+import { turnArrayToObject } from '../utils/helpers'
 
 export default function (state = {}, action) {
 	
