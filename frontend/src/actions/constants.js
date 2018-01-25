@@ -1,4 +1,4 @@
-export const ROOT_URL = "http://localhost:3001"
+export const ROOT_URL = "https://afternoon-escarpment-67048.herokuapp.com"
 
 export const headers = {
 	headers: { 

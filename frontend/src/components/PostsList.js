@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { connect }from 'react-redux';
-import { Link }from 'react-router-dom';
-import { votePost, getPosts, getPostsByCategory, deletePost, getCategories } from '../actions';
-import { sortObjValues } from '../utils/helpers';
+import React, { Component } from 'react'
+import { connect }from 'react-redux'
+import { Link }from 'react-router-dom'
+import { votePost, getPosts, getPostsByCategory, deletePost, getCategories } from '../actions'
 
 class PostsList extends Component {
 	state = {
@@ -38,9 +37,10 @@ class PostsList extends Component {
 	renderPosts() {
 		const { posts } = this.props
 		const { order } = this.state
-		const sortedPosts = sortObjValues(posts, order)
-		console.log(posts)
-		return sortedPosts.map(post => ( 
+		
+		return Object.values(posts).sort((a,b) => {
+			return b[order] - a[order] //descending
+		}).map(post => ( 
 			<li className = "row list-group-item" key = { post.id }> 
 				<div className = "col-md-8" > 
 					<Link to = {`/${post.category}/${post.id}`} > 
@@ -98,7 +98,7 @@ class PostsList extends Component {
 					</div> 
 					<ul className = "list-group" > {this.renderPosts()} </ul> 
 					<div className = "row" > 
-						<Link className = "add-post-button btn btn-primary" to = "/posts/create-edit" > Add a Post < /Link> 
+						<Link className = "add-post-button btn btn-primary" to = "/posts/create-edit" > Add a Post </Link> 
 					</div> 
 				</div> 
 			</div>);

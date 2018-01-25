@@ -9,9 +9,3 @@ export function turnArrayToObject(arr) {
 		return obj
 	},{})
 }
-
-export function sortObjValues (obj, order) {
-	Object.values(obj).sort((a,b) => {
-		return b[order] - a[order] //descending
-	})
-}
